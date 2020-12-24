@@ -23,6 +23,9 @@ function getData(req, res) {
   
     process.stdout.on('data', function(data) { 
         res.send(data); 
+      
+        //the code below is not required. Just kept it for now 
+      
         fs.writeFileSync('stockdata.json', data);
         // let jdata = JSON.stringify(data);
         // fs.writeFileSync('stockdata.json', jdata);
