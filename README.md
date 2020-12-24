@@ -1,7 +1,8 @@
 # Setup
 
 1. Install Node 
-2. run Setup.cmd present in root folder 
+2. Download this project
+3. Run Setup.cmd present in root folder 
 
 # How to run backend 
 
