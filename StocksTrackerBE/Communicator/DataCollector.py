@@ -19,6 +19,7 @@ def get_balance_sheet_data(company):
 def send_output(data):
     print(json.dumps(data))
 
+#TODO: Move this to a seperate file after moving this script to Algos folder
 ticker = sys.argv[1]
 if sys.argv[1]== "netincome":
     get_net_income(sys.argv[2])
