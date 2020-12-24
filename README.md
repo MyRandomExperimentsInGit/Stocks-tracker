@@ -30,3 +30,9 @@ In addition to the querry result being displayed in the browser, you can also fi
 ## Note
 
 For sample result data look at \Communicator\stockdata.json
+
+# TODOs
+
+1. Move python code from Communicator folder to Algos folder and adapt it in node js.
+2. Once the movement is done move the part of code where we check what command has been passed to a seperate file and adapt it in communicator.js 
+3. json.dump in python script is downloading the data to local machine, find a workaround.
