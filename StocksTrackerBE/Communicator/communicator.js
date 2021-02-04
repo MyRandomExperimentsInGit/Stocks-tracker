@@ -1,41 +1,36 @@
-// import express JS module into app 
-// and creates its variable. 
-var express = require('express'); 
-var fs = require('fs');
-var app = express(); 
-  
-// Creates a server which runs on port 3000 and  
-// can be accessed through localhost:3000 
-app.listen(3000, function() { 
-    console.log('server running on port 3000'); 
-} ) 
-  
-// Function getData() is executed whenever  
-// url is of the form localhost:3000/stocks 
-app.get('/stocks', getData); 
-  
-function getData(req, res) { 
-      
-    var spawn = require("child_process").spawn; 
-      
-    // E.g : http://localhost:3000/stocks?operation=netincome&tracker=AAPL
-    var process = spawn('python',["./DataCollector.py",req.query.operation,req.query.tracker] ); 
-  
-    process.stdout.on('data', function(data) { 
-        res.send(data); 
-      
-        //the code below is not required. Just kept it for now 
-      
-        fs.writeFileSync('stockdata.json', data);
-        // let jdata = JSON.stringify(data);
-        // fs.writeFileSync('stockdata.json', jdata);
-        console.log("reading from written file")
-        fs.readFile('stockdata.json', (err, rawdata) => {
-            if (err) throw err;
-            let parsedData = JSON.parse(rawdata);
-            console.log(JSON.stringify(parsedData));
-        });
-        
-        console.log('This is after the read call');
-    } ) 
-} 
+const express = require('express');
+const app = express();
+const yfData = require('./DataFetcher.js')
+
+app.listen(3000, function () {
+    console.log('server running on port 3000');
+})
+
+
+//http://localhost:3000/tracker/AAPL/operation/getHistoricData/2020-11-01/2020-11-08
+console.log("Fetching info")
+
+app.get('/tracker/:trackerid/operation/:opid/:fromdate?/:todate?', getData);
+
+
+function getData(req, res) {
+    console.log("req.params.tracker" + req.params.trackerid)
+    console.log("req.params.operation" + req.params.opid)
+    switch (req.params.opid) {
+        case "getPrice":
+            var Data = yfData.getPrice(req.params.trackerid)
+            res.send(Data)
+            break;
+        case "getHistoricData":
+            var Data = yfData.getHistoricData(req.params.trackerid, req.params.fromdate, req.params.todate)
+            res.send(Data)
+            break;
+        case "fiftyDayAverage":
+            var Data = yfData.getFiftyDayAverage(req.params.trackerid)
+            res.send(Data)
+            break;
+        default:
+            res.send("Invalid data");
+    }
+}
+
