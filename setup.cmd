@@ -1,1 +1,1 @@
-pip install YahooFinancials
+powershell.exe -executionpolicy Bypass -command  . .\setup.ps1
